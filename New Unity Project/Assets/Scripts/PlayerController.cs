@@ -1,8 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-public class PlayerController : MonoBehaviour {
+using UnityEngine.Networking;
+public class PlayerController : NetworkBehaviour {
 
 	public float moveSpeed = 5;
 	public float moveX;
@@ -15,15 +15,35 @@ public class PlayerController : MonoBehaviour {
 	private Vector2 lastMove;
 
 
+
+
+
+
 	// Use this for initialization
 	void Start () {
 		anim = GetComponent<Animator> ();
 		rigidBody = GetComponent<Rigidbody2D>();
+		if (isLocalPlayer) {
+			//rigidBody.gameObject.GetComponent<Renderer> ().material.color = Color.black;
+			this.transform.GetChild (0).gameObject.GetComponent<Camera> ().enabled = true;
+
+		}
+		else {
+			
+			this.transform.GetChild (0).gameObject.GetComponent<Camera> ().enabled = false;
+			rigidBody.gameObject.GetComponent<Renderer> ().material.color = Color.red;
+
+		}
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		
+		if (!isLocalPlayer)
+		{
+			
+			return;
+		}
+
 		moveX = Input.GetAxisRaw ("Horizontal");	// moveX = 1, 0 or -1
 		moveY = Input.GetAxisRaw ("Vertical");		// moveY = 1, 0 or -1
 		playerMoving = false;
@@ -46,5 +66,11 @@ public class PlayerController : MonoBehaviour {
 		anim.SetBool ("PlayerMoving", playerMoving);
 		anim.SetFloat ("LastMoveX", lastMove.x);
 		anim.SetFloat ("LastMoveY", lastMove.y);
+
+
 	}
+
+
+
+
 }
