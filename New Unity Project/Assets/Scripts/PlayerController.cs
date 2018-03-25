@@ -14,10 +14,7 @@ public class PlayerController : NetworkBehaviour {
 	private bool playerMoving;
 	private Vector2 lastMove;
 
-
-
-
-
+	private Light myLight;
 
 	// Use this for initialization
 	void Start () {
