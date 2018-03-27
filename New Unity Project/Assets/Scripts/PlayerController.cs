@@ -7,9 +7,10 @@ public class PlayerController : MonoBehaviour {
 	public float moveSpeed = 5;
 	public float moveX;
 	public float moveY;
+	public GameObject player2;
 
 	private Animator anim;
-	private Rigidbody2D rigidBody;
+	//private Rigidbody2D rigidBody;
 
 	private bool playerMoving;
 	private Vector2 lastMove;
@@ -18,7 +19,7 @@ public class PlayerController : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		anim = GetComponent<Animator> ();
-		rigidBody = GetComponent<Rigidbody2D>();
+		//rigidBody = GetComponent<Rigidbody2D>();
 	}
 	
 	// Update is called once per frame
@@ -41,6 +42,13 @@ public class PlayerController : MonoBehaviour {
 			lastMove = new Vector2 (moveX, moveY);	// only updated when moved
 		}
 
+		Debug.DrawRay (transform.position, player2.transform.position-transform.position, Color.red);
+
+		RaycastHit2D hit = Physics2D.Linecast (transform.position, player2.transform.position);
+		if (hit.collider.gameObject == player2) {
+			Debug.Log ("in sight!");
+		}
+			
 		anim.SetFloat ("MoveX", moveX);
 		anim.SetFloat ("MoveY", moveY);
 		anim.SetBool ("PlayerMoving", playerMoving);

@@ -5,8 +5,8 @@ public class CameraController : MonoBehaviour {
 
 	public GameObject followTarget;
 	private Vector3 targetPos;
-	public float moveSpeed = 5.0f;
-	public float offset = -12.0f;
+	private float moveSpeed = 6.0f;
+	private float offset = -10.0f;
 
 	// Use this for initialization
 	void Start () {
