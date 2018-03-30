@@ -1,8 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 
-public class PlayerController : MonoBehaviour {
+public class PlayerController : NetworkBehaviour {
 
 	public float moveSpeed = 5;
 	public float moveX;
@@ -14,17 +15,47 @@ public class PlayerController : MonoBehaviour {
 
 	private bool playerMoving;
 	private Vector2 lastMove;
+	private NetworkStartPosition[] spawnPoints;
+
+	public override void OnStartLocalPlayer(){
+	Invoke ("Reactivate cam",0.5f);
+	
+	}
+
+	void ReactivateCam(){
+		this.gameObject.GetComponentInChildren<Camera> ().enabled = false;
+		this.gameObject.GetComponentInChildren<Camera> ().enabled = true;
+		}
+
 
 
 	// Use this for initialization
 	void Start () {
 		anim = GetComponent<Animator> ();
 		//rigidBody = GetComponent<Rigidbody2D>();
+		if (isLocalPlayer) {
+			this.transform.GetChild(0).gameObject.GetComponent<Camera>().enabled=true;	
+			spawnPoints = FindObjectsOfType<NetworkStartPosition> ();
+
+
+		} else {
+			
+			this.transform.GetChild(0).gameObject.GetComponent<Camera>().enabled=false;	
+		}
 	}
-	
+
 	// Update is called once per frame
 	void Update () {
-		
+		if (!isLocalPlayer) {
+			
+			return;
+		}
+		MoveAndRotate ();
+
+	}
+
+
+	void MoveAndRotate(){
 		moveX = Input.GetAxisRaw ("Horizontal");	// moveX = 1, 0 or -1
 		moveY = Input.GetAxisRaw ("Vertical");		// moveY = 1, 0 or -1
 		playerMoving = false;
@@ -48,11 +79,17 @@ public class PlayerController : MonoBehaviour {
 		if (hit.collider.gameObject == player2) {
 			Debug.Log ("in sight!");
 		}
-			
+
 		anim.SetFloat ("MoveX", moveX);
 		anim.SetFloat ("MoveY", moveY);
 		anim.SetBool ("PlayerMoving", playerMoving);
 		anim.SetFloat ("LastMoveX", lastMove.x);
 		anim.SetFloat ("LastMoveY", lastMove.y);
+
 	}
+
+
+
+
+
 }

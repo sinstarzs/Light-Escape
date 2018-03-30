@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
-
-public class CameraController : MonoBehaviour {
+using UnityEngine.Networking;
+public class CameraController : NetworkBehaviour {
 
 	public GameObject followTarget;
 	private Vector3 targetPos;
