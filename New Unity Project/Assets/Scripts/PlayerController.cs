@@ -8,7 +8,7 @@ public class PlayerController : NetworkBehaviour {
 	public float moveSpeed = 5;
 	public float moveX;
 	public float moveY;
-	public GameObject player2;
+	public GameObject runner;
 
 	private Animator anim;
 	//private Rigidbody2D rigidBody;
@@ -32,6 +32,7 @@ public class PlayerController : NetworkBehaviour {
 	// Use this for initialization
 	void Start () {
 		anim = GetComponent<Animator> ();
+		runner = GameObject.Find ("Runner");
 		//rigidBody = GetComponent<Rigidbody2D>();
 		if (isLocalPlayer) {
 			this.transform.GetChild(0).gameObject.GetComponent<Camera>().enabled=true;	
@@ -60,10 +61,6 @@ public class PlayerController : NetworkBehaviour {
 		moveY = Input.GetAxisRaw ("Vertical");		// moveY = 1, 0 or -1
 		playerMoving = false;
 
-		//rigidBody.velocity = new Vector2(
-		//	moveX * moveSpeed * (1.0f-0.2f*Mathf.Abs(moveY)),
-		//	moveY * moveSpeed * (1.0f-0.2f*Mathf.Abs(moveX)));
-
 		if (moveX != 0 || moveY != 0) 
 		{
 			transform.Translate (new Vector3(
@@ -73,10 +70,10 @@ public class PlayerController : NetworkBehaviour {
 			lastMove = new Vector2 (moveX, moveY);	// only updated when moved
 		}
 
-		Debug.DrawRay (transform.position, player2.transform.position-transform.position, Color.red);
+		Debug.DrawRay (transform.position, runner.transform.position-transform.position, Color.red);
 
-		RaycastHit2D hit = Physics2D.Linecast (transform.position, player2.transform.position);
-		if (hit.collider.gameObject == player2) {
+		RaycastHit2D hit = Physics2D.Linecast (transform.position, runner.transform.position);
+		if (hit.collider.gameObject == runner) {
 			Debug.Log ("in sight!");
 		}
 
