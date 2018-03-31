@@ -22,6 +22,7 @@ GameObject:
   - component: {fileID: 212821528663849152}
   - component: {fileID: 114195997108564216}
   - component: {fileID: 95262868533637048}
+  - component: {fileID: 114828712755476984}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -73,6 +74,39 @@ MonoBehaviour:
   moveSpeed: 5
   moveX: 0
   moveY: 0
+  player2: {fileID: 1723954380669130, guid: f7a500eb7090c764f87955efe11c1a56, type: 2}
+--- !u!114 &114828712755476984
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1152741685641886}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 372142912, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SceneId:
+    m_Value: 0
+  m_AssetId:
+    i0: 243
+    i1: 65
+    i2: 201
+    i3: 253
+    i4: 180
+    i5: 210
+    i6: 4
+    i7: 189
+    i8: 90
+    i9: 109
+    i10: 209
+    i11: 114
+    i12: 240
+    i13: 143
+    i14: 176
+    i15: 136
+  m_ServerOnly: 0
+  m_LocalPlayerAuthority: 1
 --- !u!212 &212821528663849152
 SpriteRenderer:
   m_ObjectHideFlags: 1
