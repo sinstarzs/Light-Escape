@@ -4,9 +4,13 @@
 TagManager:
   serializedVersion: 2
   tags:
+<<<<<<< HEAD
   - DLight
   - PLight
   - joystick
+=======
+  - EnergyBar
+>>>>>>> master
   layers:
   - Default
   - TransparentFX
