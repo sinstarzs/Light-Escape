@@ -2,32 +2,48 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class KwPlayer : NetworkBehaviour {
 
 	public float moveSpeed = 5;
 	public float moveX;
 	public float moveY;
+    public GameObject player1;
 	public GameObject player2;
-
 	public FixedJoystick joystick;
 
+    private Text win;
+    private Text lost;
+    private Text chaserText;
+    private Text runnerText;
+
+    public float c = 0;
+
+
+    private GameObject bar;
 
 	private Animator anim;
-	//private Rigidbody2D rigidBody;
+
+    private float originalHeight;
+
 
 	public bool playerMoving;
 	private Vector2 lastMove;
 	private NetworkStartPosition[] spawnPoints;
 
-	//[SyncVar(hook="MapToggle")]
 	public string playerType="chaser";
 
-	//[SyncVar]
-	//public string pname="chaser";
+    public float roundTime = 45f;
+
+    public float leftTime;
+
+    public bool found;
 
 
-	public override void OnStartLocalPlayer(){
+
+    public override void OnStartLocalPlayer(){
 	Invoke ("Reactivate cam",0.5f);
 		//CmdToggle ();
 
@@ -44,8 +60,29 @@ public class KwPlayer : NetworkBehaviour {
 	void Start () {
 		joystick = FindObjectOfType<FixedJoystick>();
 		anim = GetComponent<Animator> ();
-		//rigidBody = GetComponent<Rigidbody2D>();
-		if (isLocalPlayer) {
+
+
+        win = GameObject.Find("Won").GetComponent<Text>();
+        lost = GameObject.Find("Lost").GetComponent<Text>();
+        runnerText = GameObject.Find("Runner").GetComponent<Text>();
+        chaserText = GameObject.Find("Chaser").GetComponent<Text>();
+
+        win.color = Color.clear;
+        lost.color = Color.clear;
+        runnerText.color = Color.clear;
+        chaserText.color = Color.clear;
+
+        leftTime = roundTime;
+
+       
+
+
+        bar = GameObject.Find("Bar");
+
+        originalHeight = bar.GetComponent<RectTransform>().sizeDelta.y;
+        
+
+        if (isLocalPlayer) {
 			this.transform.GetChild(0).gameObject.GetComponent<Camera>().enabled=true;	
 			spawnPoints = FindObjectsOfType<NetworkStartPosition> ();
 		
@@ -55,6 +92,7 @@ public class KwPlayer : NetworkBehaviour {
 			} else {
 				Debug.Log (playerType);
 			}
+
 
 			PointLightToggle (playerType);
             DirectionalLightToggle(playerType);
@@ -71,24 +109,105 @@ public class KwPlayer : NetworkBehaviour {
 			
 			return;
 		}
-	
-		//Debug.Log (NetworkManager.matchHost);
+
+        moveX = joystick.Horizontal;
+        moveY = joystick.Vertical;
+
+        if (GameObject.FindGameObjectsWithTag("Player").Length != 2)
+        {
+            leftTime = roundTime;
+        }
+        else
+        {
+            leftTime -= Time.deltaTime;
+        }
+       
+        if (roundTime - leftTime < 5)
+        {
+            instructionTextDisplay(runnerText,chaserText,playerType);
+        }
+        else
+        {
+            Debug.Log("Arrive");
+            GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+            Debug.Log("pass");
+            
+            player1 = players[0];
+            player2 = players[1];
+
+            runnerText.color = Color.clear;
+            chaserText.color = Color.clear;
+
+            if (!found)
+            {
+                found = (detectCollision(player1, player2));
+            }
+            
+            if (found |player1.transform.position.z==0.1f|player2.transform.position.z==0.1f)
+            {
+                if (c == 0)
+                {
+                    this.transform.position += new Vector3(0, 0, 0.1f);
+                }
+
+                moveX = 0.00001f;
+                moveY = 0.00001f;
+                c+=1f;
+                Debug.Log(c);
+                
+             
+            }
+ 
+            if ((player1.transform.position.z==0.1f | player2.transform.position.z==0.1f)&c==100f)
+            {
+               
+                if (playerType == "hider")
+                {
+                    displayResult(win, lost, false);
+                    gameOver(5);
+                }
+                else
+                {
+                    displayResult(win, lost, true);
+                    gameOver(5);
+                }
+            }
+
+           
+        }
+        
+        if (leftTime <= 0)
+        {
+            if(playerType == "hider")
+
+            {
+                displayResult(win, lost, true);
+                //Debug.Log()
+                gameOver(5);
+            }
+            else
+            {
+                displayResult(win, lost, false);
+                gameOver(5);
+            }
+        }
+
+
 		MoveAndRotate ();
+
+        float leftTimeRatio = leftTime / roundTime;
+        shortenTimeBar(bar,originalHeight,leftTimeRatio);
 
 	}
 
 
 	void MoveAndRotate(){
 
-		moveX = joystick.Horizontal;
-		moveY = joystick.Vertical;
-		//moveX = Input.GetAxisRaw ("Horizontal");	// moveX = 1, 0 or -1
-		//moveY = Input.GetAxisRaw ("Vertical");		// moveY = 1, 0 or -1
+	
+
 		playerMoving = false;
 
-		//rigidBody.velocity = new Vector2(
-		//	moveX * moveSpeed * (1.0f-0.2f*Mathf.Abs(moveY)),
-		//	moveY * moveSpeed * (1.0f-0.2f*Mathf.Abs(moveX)));
+        
 
 		if (moveX != 0 || moveY != 0) 
 		{
@@ -96,14 +215,10 @@ public class KwPlayer : NetworkBehaviour {
 			playerMoving = true;
 			lastMove = new Vector2 (moveX, moveY);	// only updated when moved
 		}
-
-		//Debug.DrawRay (transform.position, player2.transform.position-transform.position, Color.red);
+        
 		Debug.DrawRay (Vector2.zero, new Vector2(3,0), Color.red);
 
-		RaycastHit2D hit = Physics2D.Linecast (transform.position, player2.transform.position);
-		if (hit.collider.gameObject == player2) {
-			Debug.Log ("in sight!");
-		}
+		
 
 		anim.SetFloat ("MoveX", moveX);
 		anim.SetFloat ("MoveY", moveY);
@@ -113,7 +228,13 @@ public class KwPlayer : NetworkBehaviour {
 
 	}
 
-	[Command]
+    [Command]
+    void CmdFound()
+    {
+        found = true;
+    }
+
+    [Command]
 	void CmdToggle()
 	{
 		playerType = "hider";
@@ -157,4 +278,62 @@ public class KwPlayer : NetworkBehaviour {
                 moveY * moveSpeed * Time.deltaTime * (1.0f - 0.2f * Mathf.Abs(moveX)));
         transform.Translate(movementVector);
     }
+
+
+    public void shortenTimeBar(GameObject timeBar, float orignialHeight,float timeLeftRatio)
+    {
+        var rectTransform = timeBar.GetComponent<RectTransform>();
+        rectTransform.sizeDelta = new Vector2(rectTransform.sizeDelta.x, orignialHeight * timeLeftRatio);
+    }
+
+    public void instructionTextDisplay(Text runnerText, Text chaserText, string playerType)
+    {
+        if(playerType == "hider")
+        {
+            runnerText.color = Color.white;
+        }
+        else
+        {
+            chaserText.color = Color.white;
+        }
+    }
+
+ 
+    public void displayResult(Text win, Text lost, bool winGame)
+    {
+        if (winGame)
+        {
+            win.color = Color.white;
+        }
+        else
+        {
+            lost.color = Color.white;
+        }
+    }
+
+
+
+    public void gameOver(float sleepSeconds)
+    {
+       
+        SceneManager.LoadScene("Menu");
+    }
+
+
+    //return true if in sight
+    public bool detectCollision(GameObject player1, GameObject player2)
+    {
+        RaycastHit2D hit = Physics2D.Raycast(player1.transform.position, player2.transform.position-player1.transform.position);
+        if (hit.collider.gameObject == player2)
+        {
+            if (hit.distance < 1f)
+            {
+                return true;
+               
+
+            }
+        }
+        return false;
+    }
+
 }

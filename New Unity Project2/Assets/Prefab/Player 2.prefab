@@ -137,7 +137,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1782882961222662}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 15, y: 15, z: 0}
+  m_LocalPosition: {x: 15, y: 15, z: 2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4017127381615612}
@@ -366,7 +366,15 @@ MonoBehaviour:
   moveSpeed: 5
   moveX: 0
   moveY: 0
+  player1: {fileID: 0}
   player2: {fileID: 0}
+  joystick: {fileID: 0}
+  c: 0
+  playerMoving: 0
+  playerType: chaser
+  roundTime: 45
+  leftTime: 0
+  found: 0
 --- !u!114 &114345936647817198
 MonoBehaviour:
   m_ObjectHideFlags: 1

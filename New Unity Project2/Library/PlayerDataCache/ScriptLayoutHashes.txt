@@ -1,4 +1,4 @@
-Android
+WindowsStandalone
 SceneListBegin?
 Assets/Scenes/Menu.unity
 Assets/Scenes/lobbyscene.unity
@@ -150,7 +150,7 @@ bc68edb0af574bf79f9550ead8ebae5c UnityEngine.HoloLens.dll:UnityEngine.Audio.Audi
 c2275a8bfbb9f9942cad75ecdfded41d UnityEngine.HoloLens.dll:UnityEngine.XR.WSA.SpatialMappingCollider
 45f3431f0103c41611e8d4eec3d439df UnityEngine.HoloLens.dll:UnityEngine.XR.WSA.SpatialMappingRenderer
 50a0fa002cfc67638c87a901e46b763e Assembly-CSharp.dll:TMPro.Examples.TMP_TextSelector_B
-2ac6f34bb0acf006b1df3dd520344001 Assembly-CSharp.dll:.KwPlayer
+a9b3f932f4bdc20f90a412654282a681 Assembly-CSharp.dll:.KwPlayer
 020550babdb991365f61c5bffe1f4f52 Assembly-CSharp.dll:TMPro.Examples.Benchmark03
 fd2c4262b5bb8e1bd7697031fe4ba2c6 Assembly-CSharp.dll:.FloatingJoystick
 b9332c0eee630779376843b5343eb250 Assembly-CSharp.dll:TMPro.Examples.TMP_TextInfoDebugTool

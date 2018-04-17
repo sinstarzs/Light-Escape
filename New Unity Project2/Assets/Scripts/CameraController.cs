@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.Networking;
+using UnityEngine.UI;
 public class CameraController : NetworkBehaviour {
 
 	public GameObject followTarget;
@@ -12,6 +13,7 @@ public class CameraController : NetworkBehaviour {
 	// Use this for initialization
 	void Start () {
 		targetPos.z = offset;
+        Debug.Log("render:"+render);
 	}
 
 	// Update is called once per frame
@@ -25,15 +27,18 @@ public class CameraController : NetworkBehaviour {
 		
 		if (!render) {
 			GameObject.FindGameObjectWithTag ("DLight").GetComponent<Light>().enabled = false;
+            
 
-		}
+        }
 	
 	}
 
 	void OnPostRender(){
 		if(!render){
 			GameObject.FindGameObjectWithTag ("DLight").GetComponent<Light>().enabled = true;
-	}
+           
+        }
+
 		
 }
 
