@@ -1,5 +1,5 @@
-﻿
-/*
+﻿/*
+
 using UnityEngine;
 using UnityEngine.Networking;
 using System.Collections;
@@ -17,8 +17,16 @@ public class NewPlayModeTest {
     [UnityTest]
     public IEnumerator Player_Move_NoInput()
     {
+
+        SceneManager.LoadScene("MainScene");
+        
         var playerPrefab = Resources.Load("Player 2");
+        yield return new WaitForEndOfFrame();
+        var chaser = PrefabUtility.InstantiatePrefab(playerPrefab) as GameObject;
         var runner = PrefabUtility.InstantiatePrefab(playerPrefab) as GameObject;
+
+
+        
         var playerController = runner.GetComponent<KwPlayer>();
         Assert.IsFalse(playerController.playerMoving);
 
@@ -114,7 +122,12 @@ public class NewPlayModeTest {
     [UnityTest]
     public IEnumerator Player_MoveUp()
     {
+
+        SceneManager.LoadScene("MainScene");
         var playerPrefab = Resources.Load("Player 2");
+        yield return new WaitForEndOfFrame();
+
+        var chaser = PrefabUtility.InstantiatePrefab(playerPrefab) as GameObject;
 
         var runner = PrefabUtility.InstantiatePrefab(playerPrefab) as GameObject;
 
@@ -122,7 +135,7 @@ public class NewPlayModeTest {
 
         runnerController.updateTransform(0, 1, runnerController.transform);
 
-        yield return new WaitForSeconds(1);
+        //yield return new WaitForSeconds(1);
 
 
         Assert.IsTrue(runnerController.transform.position.y > 0);
@@ -131,7 +144,13 @@ public class NewPlayModeTest {
     [UnityTest]
     public IEnumerator Player_MoveDown()
     {
+
+
+        SceneManager.LoadScene("MainScene");
         var playerPrefab = Resources.Load("Player 2");
+        yield return new WaitForEndOfFrame();
+
+        var chaser = PrefabUtility.InstantiatePrefab(playerPrefab) as GameObject;
 
         var runner = PrefabUtility.InstantiatePrefab(playerPrefab) as GameObject;
 
@@ -139,7 +158,7 @@ public class NewPlayModeTest {
 
         runnerController.updateTransform(0, -1, runnerController.transform);
 
-        yield return new WaitForSeconds(1);
+        //yield return new WaitForSeconds(1);
 
 
         Assert.IsTrue(runnerController.transform.position.y < 0);
@@ -148,7 +167,12 @@ public class NewPlayModeTest {
     [UnityTest]
     public IEnumerator Player_Moveleft()
     {
+
+        SceneManager.LoadScene("MainScene");
         var playerPrefab = Resources.Load("Player 2");
+        yield return new WaitForEndOfFrame();
+
+        var chaser = PrefabUtility.InstantiatePrefab(playerPrefab) as GameObject;
 
         var runner = PrefabUtility.InstantiatePrefab(playerPrefab) as GameObject;
 
@@ -156,7 +180,7 @@ public class NewPlayModeTest {
 
         runnerController.updateTransform(-1, 0, runnerController.transform);
 
-        yield return new WaitForSeconds(1);
+        //yield return new WaitForSeconds(1);
 
 
         Assert.IsTrue(runnerController.transform.position.x < 0);
@@ -166,7 +190,12 @@ public class NewPlayModeTest {
     [UnityTest]
     public IEnumerator Player_MoveRight()
     {
+
+        SceneManager.LoadScene("MainScene");
         var playerPrefab = Resources.Load("Player 2");
+        yield return new WaitForEndOfFrame();
+
+        var chaser = PrefabUtility.InstantiatePrefab(playerPrefab) as GameObject;
 
         var runner = PrefabUtility.InstantiatePrefab(playerPrefab) as GameObject;
 
@@ -174,7 +203,7 @@ public class NewPlayModeTest {
 
         runnerController.updateTransform(1, 0, runnerController.transform);
 
-        yield return new WaitForSeconds(1);
+        //yield return new WaitForSeconds(1);
 
 
         Assert.IsTrue(runnerController.transform.position.x > 0);
@@ -183,39 +212,25 @@ public class NewPlayModeTest {
 
     }
 
-    [UnityTest]
-    public IEnumerator Player_CameraSetting()
-    {
-        var playerPrefab = Resources.Load("Player 2");
-
-        var runner = PrefabUtility.InstantiatePrefab(playerPrefab) as GameObject;
-
-        var runnerController = runner.GetComponent<KwPlayer>();
-
-        yield return new WaitForSeconds(1);
-
-        if (runnerController.isLocalPlayer)
-        {
-            Assert.IsTrue(runnerController.gameObject.GetComponentInChildren<Camera>().enabled);
-        }
-        else
-        {
-            Assert.IsFalse(runnerController.gameObject.GetComponentInChildren<Camera>().enabled);
-        }
-    }
+  
 
     [UnityTest]
     public IEnumerator PointLightToggle_Hidder()
     {
 
+
+        SceneManager.LoadScene("MainScene");
         var playerPrefab = Resources.Load("Player 2");
+        yield return new WaitForEndOfFrame();
+
+        var chaser = PrefabUtility.InstantiatePrefab(playerPrefab) as GameObject;
 
         var runner = PrefabUtility.InstantiatePrefab(playerPrefab) as GameObject;
 
         var runnerController = runner.GetComponent<KwPlayer>();
 
         runnerController.PointLightToggle("hider");
-        yield return new WaitForSeconds(1);
+        //yield return new WaitForSeconds(1);
 
         float intensity = runnerController.transform.GetChild(1).gameObject.GetComponent<Light>().intensity;
 
@@ -226,7 +241,11 @@ public class NewPlayModeTest {
     [UnityTest]
     public IEnumerator PointLightToggle_Chaser()
     {
+
+        SceneManager.LoadScene("MainScene");
         var playerPrefab = Resources.Load("Player 2");
+        yield return new WaitForEndOfFrame();
+
 
         var runner = PrefabUtility.InstantiatePrefab(playerPrefab) as GameObject;
 
@@ -235,7 +254,7 @@ public class NewPlayModeTest {
         var runnerController = runner.GetComponent<KwPlayer>();
 
         runnerController.PointLightToggle("chaser");
-        yield return new WaitForSeconds(1);
+        //yield return new WaitForSeconds(1);
 
         float intensity = runnerController.transform.GetChild(1).gameObject.GetComponent<Light>().intensity;
 
@@ -245,8 +264,10 @@ public class NewPlayModeTest {
     [UnityTest]
     public IEnumerator DirectionalLightToggle_Hider()
     {
-        var playerPrefab = Resources.Load("Player 2");
 
+        SceneManager.LoadScene("MainScene");
+        var playerPrefab = Resources.Load("Player 2");
+        yield return new WaitForEndOfFrame();
         var runner = PrefabUtility.InstantiatePrefab(playerPrefab) as GameObject;
 
         var runner2 = PrefabUtility.InstantiatePrefab(playerPrefab) as GameObject;
@@ -265,7 +286,11 @@ public class NewPlayModeTest {
     [UnityTest]
     public IEnumerator DiretionalLightToggle_Chaser()
     {
+
+        SceneManager.LoadScene("MainScene");
         var playerPrefab = Resources.Load("Player 2");
+        yield return new WaitForEndOfFrame();
+
 
         var runner = PrefabUtility.InstantiatePrefab(playerPrefab) as GameObject;
 
@@ -353,6 +378,120 @@ public class NewPlayModeTest {
         Assert.IsNull(GameObject.Find("OptionMenu"));
     }
 
+    [UnityTest]
+    public IEnumerator UI_VolumeControl_Test()
+    {
+        SceneManager.LoadScene("Menu");
+        yield return new WaitForSeconds(0.5f);
+
+        Button optionButton = GameObject.Find("OptionButton").GetComponent<Button>();
+
+        optionButton.onClick.Invoke();
+
+        yield return new WaitForEndOfFrame();
+        Slider slider = GameObject.Find("Slider").GetComponent<Slider>();
+
+        slider.value = 1;
+
+        AudioSource audio = GameObject.Find("BackgroundMusic").GetComponent<AudioSource>();
+
+
+        yield return new WaitForEndOfFrame();
+
+        Assert.IsTrue(audio.volume == 1);
+    }
+
+
+    [UnityTest]
+    public IEnumerator Mechanism_CatchDetection_inDistance()
+
+    {
+
+        SceneManager.LoadScene("MainScene");
+        var playerPrefab = Resources.Load("Player 2");
+        yield return new WaitForEndOfFrame();
+
+        var chaser = PrefabUtility.InstantiatePrefab(playerPrefab) as GameObject;
+
+        var runner = PrefabUtility.InstantiatePrefab(playerPrefab) as GameObject;
+
+        var runnerController = runner.GetComponent<KwPlayer>();
+
+        chaser.transform.position = new Vector3(0, 0, 0);
+        runner.transform.position = new Vector3(0.8f, 0, 0);
+
+
+       
+        //Debug.Log(runner.transform.position.x);
+        bool found = runnerController.detectCollision(runner, chaser);
+
+        Assert.IsTrue(found);
+
+
+    }
+
+
+    [UnityTest]
+    public IEnumerator Mechanism_CatchDetection_OutDistance()
+    {
+        SceneManager.LoadScene("MainScene");
+        var playerPrefab = Resources.Load("Player 2");
+  
+        yield return new WaitForEndOfFrame();
+
+        var chaser = PrefabUtility.InstantiatePrefab(playerPrefab) as GameObject;
+
+        var runner = PrefabUtility.InstantiatePrefab(playerPrefab) as GameObject;
+
+       
+
+        var runnerController = runner.GetComponent<KwPlayer>();
+
+        chaser.transform.position = new Vector3(0, 0, 0);
+        runner.transform.position = new Vector3(2, 0, 0);
+
+
+
+        //Debug.Log(runner.transform.position.x);
+        bool found = runnerController.detectCollision(runner, chaser);
+
+        Assert.IsFalse(found);
+    }
+
+    [UnityTest]
+    public IEnumerator UI_shortenTimeBar_Test()
+    {
+        SceneManager.LoadScene("MainScene");
+        var playerPrefab = Resources.Load("Player 2");
+        yield return new WaitForEndOfFrame();
+
+       
+
+        var runner = PrefabUtility.InstantiatePrefab(playerPrefab) as GameObject;
+
+        var runner2 = PrefabUtility.InstantiatePrefab(playerPrefab) as GameObject;
+       
+
+        yield return new WaitForSeconds(1);
+        GameObject timeBar = GameObject.Find("Bar");
+
+        Assert.IsNotNull(timeBar);
+
+        var runner3 = PrefabUtility.InstantiatePrefab(playerPrefab) as GameObject;
+
+        var controller = runner3.GetComponent<KwPlayer>();
+
+        float currentHeight = controller.shortenTimeBar(timeBar,40,0.1f);
+
+       
+      
+
+
+        Assert.IsTrue(currentHeight<40);
+        
+    }
+
+
 
     [TearDown]
     public void AfterEveryTest()
@@ -364,8 +503,8 @@ public class NewPlayModeTest {
             GameObject.Destroy(joytick);
     }
     
-    
+ 
+
 }
-
-
+   
 */

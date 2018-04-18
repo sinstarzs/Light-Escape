@@ -22,7 +22,7 @@ public class KwPlayer : NetworkBehaviour {
     public float c = 0;
 
 
-    private GameObject bar;
+    public GameObject bar;
 
 
 	private Animator anim;
@@ -40,8 +40,13 @@ public class KwPlayer : NetworkBehaviour {
 
     public float leftTime;
 
-    public bool found;
+    public bool inTest = false;
 
+    
+    public float endTime = 0f;
+
+    [SyncVar(hook ="onFound")]
+    public bool found = false;
 
 
     public override void OnStartLocalPlayer(){
@@ -88,9 +93,9 @@ public class KwPlayer : NetworkBehaviour {
 		
 			if (anim.bodyPosition.x < 1.0) {
 				CmdToggle ();
-				Debug.Log (playerType);
+				//Debug.Log (playerType);
 			} else {
-				Debug.Log (playerType);
+				//Debug.Log (playerType);
 			}
 
 
@@ -141,9 +146,9 @@ public class KwPlayer : NetworkBehaviour {
         }
         else
         {
-            Debug.Log("Arrive");
+            //Debug.Log("Arrive");
             GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
-            Debug.Log("pass");
+            //Debug.Log("pass");
             
             player1 = players[0];
             player2 = players[1];
@@ -151,31 +156,21 @@ public class KwPlayer : NetworkBehaviour {
             runnerText.color = Color.clear;
             chaserText.color = Color.clear;
 
-            if (!found)
+
+            if (!found&!inTest)
             {
                 found = (detectCollision(player1, player2));
             }
-            
-            if (found |player1.transform.position.z==0.1f|player2.transform.position.z==0.1f)
-            {
-                if (c == 0)
-                {
-                    this.transform.position += new Vector3(0, 0, 0.1f);
-                }
 
-                moveX = 0.00001f;
-                moveY = 0.00001f;
-                c+=1f;
-                Debug.Log(c);
-                
-             
-            }
  
-            if ((player1.transform.position.z==0.1f | player2.transform.position.z==0.1f)&c==10f)
+            if (found)
             {
-               
+                moveX = 0;
+                moveY = 0;
+                endTime += Time.deltaTime;
                 if (playerType == "hider")
                 {
+
                     displayResult(win, lost, false);
                     //gameOver(5);
                 }
@@ -183,6 +178,11 @@ public class KwPlayer : NetworkBehaviour {
                 {
                     displayResult(win, lost, true);
                     //gameOver(5);
+                }
+
+                if (endTime > 5)
+                {
+                    gameOver();
                 }
             }
 
@@ -202,6 +202,11 @@ public class KwPlayer : NetworkBehaviour {
             {
                 displayResult(win, lost, false);
                 //gameOver(5);
+            }
+
+            if (leftTime < 5)
+            {
+                gameOver();
             }
         }
 
@@ -229,7 +234,7 @@ public class KwPlayer : NetworkBehaviour {
 			lastMove = new Vector2 (moveX, moveY);	// only updated when moved
 		}
         
-		Debug.DrawRay (Vector2.zero, new Vector2(3,0), Color.red);
+		//Debug.DrawRay (Vector2.zero, new Vector2(3,0), Color.red);
 
 
 	
@@ -259,7 +264,7 @@ public class KwPlayer : NetworkBehaviour {
 			
 			this.transform.GetChild (1).gameObject.GetComponent<Light> ().intensity = 0;
 
-		Debug.Log("Toggle invoked");
+		//Debug.Log("Toggle invoked");
 		}else{
 
 			GameObject.FindGameObjectsWithTag("Player")[0].transform.GetChild (1).gameObject.GetComponent<Light> ().intensity = 0;
@@ -293,10 +298,11 @@ public class KwPlayer : NetworkBehaviour {
     }
 
 
-    public void shortenTimeBar(GameObject timeBar, float orignialHeight,float timeLeftRatio)
+    public float shortenTimeBar(GameObject timeBar, float orignialHeight,float timeLeftRatio)
     {
         var rectTransform = timeBar.GetComponent<RectTransform>();
         rectTransform.sizeDelta = new Vector2(rectTransform.sizeDelta.x, orignialHeight * timeLeftRatio);
+        return rectTransform.sizeDelta.y;
     }
 
     public void instructionTextDisplay(Text runnerText, Text chaserText, string playerType)
@@ -326,7 +332,7 @@ public class KwPlayer : NetworkBehaviour {
 
 
 
-    public void gameOver(float sleepSeconds)
+    public void gameOver()
     {
        
         SceneManager.LoadScene("Menu");
@@ -336,17 +342,33 @@ public class KwPlayer : NetworkBehaviour {
     //return true if in sight
     public bool detectCollision(GameObject player1, GameObject player2)
     {
+        
         RaycastHit2D hit = Physics2D.Raycast(player1.transform.position, player2.transform.position-player1.transform.position);
+       
         if (hit.collider.gameObject == player2)
         {
+            
             if (hit.distance < 1f)
             {
                 return true;
-               
 
             }
         }
         return false;
     }
+    
+    void onFound(bool found)
+    {
+        if (found == true)
+        {
 
+            GameObject[] ps = GameObject.FindGameObjectsWithTag("Player");
+            GameObject p1 = ps[0];
+            GameObject p2 = ps[1];
+            p1.GetComponent<KwPlayer>().found = true;
+            p2.GetComponent<KwPlayer>().found = true;
+            Debug.Log("onFound Invoke");
+        }
+        
+    }
 }
