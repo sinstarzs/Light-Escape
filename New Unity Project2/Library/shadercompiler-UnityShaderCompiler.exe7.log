@@ -1,2 +1,40 @@
 Base path: C:/Program Files/Unity/Editor/Data
 Cmd: initializeCompiler
+Cmd: disassembleShader
+  api=4 insize=1978 outsize=3590 ok=1
+Cmd: disassembleShader
+  api=4 insize=1978 outsize=3590 ok=1
+Cmd: disassembleShader
+  api=4 insize=1502 outsize=2896 ok=1
+Cmd: disassembleShader
+  api=4 insize=2882 outsize=4852 ok=1
+Cmd: disassembleShader
+  api=4 insize=1982 outsize=3608 ok=1
+Cmd: disassembleShader
+  api=4 insize=2006 outsize=3547 ok=1
+Cmd: disassembleShader
+  api=4 insize=2006 outsize=3547 ok=1
+Cmd: disassembleShader
+  api=4 insize=1310 outsize=2609 ok=1
+Cmd: disassembleShader
+  api=4 insize=1502 outsize=2897 ok=1
+Cmd: disassembleShader
+  api=4 insize=2018 outsize=3531 ok=1
+Cmd: disassembleShader
+  api=4 insize=1774 outsize=3166 ok=1
+Cmd: disassembleShader
+  api=4 insize=2358 outsize=4164 ok=1
+Cmd: disassembleShader
+  api=4 insize=2358 outsize=4164 ok=1
+Cmd: disassembleShader
+  api=4 insize=710 outsize=1695 ok=1
+Cmd: disassembleShader
+  api=4 insize=1570 outsize=3021 ok=1
+Cmd: disassembleShader
+  api=4 insize=1570 outsize=3021 ok=1
+Cmd: disassembleShader
+  api=4 insize=978 outsize=2230 ok=1
+Cmd: disassembleShader
+  api=4 insize=906 outsize=2096 ok=1
+Cmd: compileSnippet
+  api=9 type=0 insize=2187 outsize=2979 kw= pd=UNITY_NO_DXT5nm UNITY_NO_RGBM UNITY_ENABLE_REFLECTION_BUFFERS UNITY_FRAMEBUFFER_FETCH_AVAILABLE UNITY_NO_CUBEMAP_ARRAY UNITY_NO_SCREENSPACE_SHADOWS UNITY_PBS_USE_BRDF3 UNITY_NO_FULL_STANDARD_SHADER SHADER_API_MOBILE UNITY_HARDWARE_TIER1 UNITY_COLORSPACE_GAMMA UNITY_LIGHTMAP_DLDR_ENCODING ok=1

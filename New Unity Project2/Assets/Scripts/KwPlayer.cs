@@ -6,7 +6,7 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public class KwPlayer : NetworkBehaviour {
-
+	SpriteRenderer m_SpriteRenderer;
 	public float moveSpeed = 5;
 	public float moveX;
 	public float moveY;
@@ -23,6 +23,7 @@ public class KwPlayer : NetworkBehaviour {
 
 
     private GameObject bar;
+
 
 	private Animator anim;
 
@@ -74,7 +75,6 @@ public class KwPlayer : NetworkBehaviour {
 
         leftTime = roundTime;
 
-       
 
 
         bar = GameObject.Find("Bar");
@@ -119,6 +119,19 @@ public class KwPlayer : NetworkBehaviour {
         }
         else
         {
+
+			if (playerType == "chaser") {
+				GameObject[] playersA = GameObject.FindGameObjectsWithTag("Player");
+				GameObject playera = playersA[0];
+				GameObject playerb = playersA[1];
+				if (playera.GetComponent<KwPlayer> ().playerType == "hider") {
+					playerb.GetComponent<SpriteRenderer> ().material.color = Color.black;
+				} else {
+					playera.GetComponent<SpriteRenderer> ().material.color = Color.black;
+				}
+			}
+
+
             leftTime -= Time.deltaTime;
         }
        
@@ -158,18 +171,18 @@ public class KwPlayer : NetworkBehaviour {
              
             }
  
-            if ((player1.transform.position.z==0.1f | player2.transform.position.z==0.1f)&c==100f)
+            if ((player1.transform.position.z==0.1f | player2.transform.position.z==0.1f)&c==10f)
             {
                
                 if (playerType == "hider")
                 {
                     displayResult(win, lost, false);
-                    gameOver(5);
+                    //gameOver(5);
                 }
                 else
                 {
                     displayResult(win, lost, true);
-                    gameOver(5);
+                    //gameOver(5);
                 }
             }
 
@@ -183,12 +196,12 @@ public class KwPlayer : NetworkBehaviour {
             {
                 displayResult(win, lost, true);
                 //Debug.Log()
-                gameOver(5);
+                //gameOver(5);
             }
             else
             {
                 displayResult(win, lost, false);
-                gameOver(5);
+                //gameOver(5);
             }
         }
 
@@ -218,8 +231,8 @@ public class KwPlayer : NetworkBehaviour {
         
 		Debug.DrawRay (Vector2.zero, new Vector2(3,0), Color.red);
 
-		
 
+	
 		anim.SetFloat ("MoveX", moveX);
 		anim.SetFloat ("MoveY", moveY);
 		anim.SetBool ("PlayerMoving", playerMoving);

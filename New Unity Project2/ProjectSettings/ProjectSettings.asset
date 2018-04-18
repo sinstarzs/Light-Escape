@@ -205,7 +205,6 @@ PlayerSettings:
   tvOSSmallIconLayers: []
   tvOSSmallIconLayers2x: []
   tvOSLargeIconLayers: []
-  tvOSLargeIconLayers2x: []
   tvOSTopShelfImageLayers: []
   tvOSTopShelfImageLayers2x: []
   tvOSTopShelfImageWideLayers: []
@@ -635,9 +634,9 @@ PlayerSettings:
     UNet: 1
   facebookSdkVersion: 7.9.4
   apiCompatibilityLevel: 2
-  cloudProjectId: 459ed211-d641-4467-a30d-64c1fdea29bb
-  projectName: New Unity Project (1) (1)
-  organizationId: linxuanyan23
+  cloudProjectId: c6959918-2af2-4ecf-a7b5-7fe09b4dc6ca
+  projectName: New Unity Project (2)
+  organizationId: loki-3947679
   cloudEnabled: 0
   enableNativePlatformBackendsForNewInputSystem: 0
   disableOldInputManagerSupport: 0
