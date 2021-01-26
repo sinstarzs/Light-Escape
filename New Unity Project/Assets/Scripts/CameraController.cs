@@ -7,6 +7,7 @@ public class CameraController : NetworkBehaviour {
 	private Vector3 targetPos;
 	private float moveSpeed = 6.0f;
 	private float offset = -10.0f;
+	public bool render = false;
 
 	// Use this for initialization
 	void Start () {
@@ -19,4 +20,21 @@ public class CameraController : NetworkBehaviour {
 		targetPos.y = followTarget.transform.position.y;
 		transform.position = Vector3.Lerp (transform.position,targetPos,moveSpeed*Time.deltaTime);
 	}
+
+	void OnPreCull(){
+		
+		if (!render) {
+			GameObject.FindGameObjectWithTag ("DLight").GetComponent<Light>().enabled = false;
+
+		}
+	
+	}
+
+	void OnPostRender(){
+		if(!render){
+			GameObject.FindGameObjectWithTag ("DLight").GetComponent<Light>().enabled = true;
+	}
+		
+}
+
 }
